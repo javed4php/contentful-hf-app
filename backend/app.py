@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Public, no-auth inference endpoint
 HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/distilgpt2"
