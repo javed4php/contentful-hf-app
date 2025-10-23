@@ -1,0 +1,25 @@
+name: Auto Commit and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  commit_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Make changes
+      run: |
+        echo "Auto commit on $(date)" > frontend/changes.txt
+        git add frontend/changes.txt
+        git commit -m "Auto commit $(date)"
+        git push
+
+    - name: Trigger Netlify build hook
+      run: |
+        curl -X POST -d '{}' https://api.netlify.com/build_hooks/68fa71e6d83c95358dc0f85d
