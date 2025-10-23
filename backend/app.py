@@ -1,35 +1,48 @@
-from flask import Flask, request, jsonify
+import os
+import time
 import requests
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
-# Public, no-auth inference endpoint
-HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models/distilgpt2"
+# Retrieve Contentful credentials from environment variables
+CONTENTFUL_SPACE_ID = os.getenv("CONTENTFUL_SPACE_ID")
+CONTENTFUL_ACCESS_TOKEN = os.getenv("CONTENTFUL_ACCESS_TOKEN")
+
+# Validate that the required environment variables are set
+if not CONTENTFUL_SPACE_ID or not CONTENTFUL_ACCESS_TOKEN:
+    raise ValueError("Contentful credentials are not set in environment variables.")
 
 @app.route('/generate', methods=['POST'])
 def generate():
     data = request.json
     prompt = data.get("prompt", "")
-    
-    payload = {"inputs": prompt}
-    response = requests.post(HUGGINGFACE_API_URL, json=payload)
-    
-    try:
-        result = response.json()
-        # Handle response gracefully
-        if isinstance(result, list) and "generated_text" in result[0]:
-            output = result[0]["generated_text"]
-        else:
-            output = str(result)
-        return jsonify({"output": output})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
+    # Simulate processing time
+    time.sleep(2)
+    output = f"Processed prompt: {prompt}"
+
+    # Fetch content from Contentful
+    content = fetch_content_from_contentful()
+
+    return jsonify({"output": output, "content": content})
+
+def fetch_content_from_contentful():
+    url = f"https://cdn.contentful.com/spaces/{CONTENTFUL_SPACE_ID}/entries"
+    headers = {
+        "Authorization": f"Bearer {CONTENTFUL_ACCESS_TOKEN}"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": "Failed to fetch content"}
 
 @app.route('/')
 def home():
-    return jsonify({"message": "Free Hugging Face Demo Running!"})
+    return jsonify({"message": "Contentful Integration Running!"})
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True, port=5000)
