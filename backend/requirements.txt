@@ -1,4 +1,18 @@
-flask
-requests
-python-dotenv
-contentful-management
+# Web Framework
+Flask==3.0.3
+
+# HTTP Requests
+requests==2.32.3
+
+# Environment Variables
+python-dotenv==1.0.1
+
+# Contentful SDKs
+contentful-management==2.14.2
+contentful==2.4.0
+
+# For CORS (frontend-backend communication)
+flask-cors==4.0.0
+
+# Production Web Server (Render needs this)
+gunicorn==23.0.0
