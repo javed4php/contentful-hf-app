@@ -3,6 +3,10 @@ import time
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -10,6 +14,9 @@ CORS(app)
 # Retrieve Contentful credentials from environment variables
 CONTENTFUL_SPACE_ID = os.getenv("CONTENTFUL_SPACE_ID")
 CONTENTFUL_ACCESS_TOKEN = os.getenv("CONTENTFUL_ACCESS_TOKEN")
+
+print("Space ID:", os.getenv("CONTENTFUL_SPACE_ID"))
+print("Access Token:", os.getenv("CONTENTFUL_ACCESS_TOKEN"))
 
 # Validate that the required environment variables are set
 if not CONTENTFUL_SPACE_ID or not CONTENTFUL_ACCESS_TOKEN:
