@@ -9,8 +9,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, origins=[
+    "https://app.contentful.com",
+    "https://contentful-hf-frontend.netlify.app"
+])
 # Retrieve Contentful credentials from environment variables
 CONTENTFUL_SPACE_ID = os.getenv("CONTENTFUL_SPACE_ID")
 CONTENTFUL_ACCESS_TOKEN = os.getenv("CONTENTFUL_ACCESS_TOKEN")
@@ -30,7 +32,7 @@ def generate():
     # Simulate processing time
     time.sleep(2)
     output = f"Processed prompt: {prompt}"
-
+    print(output)
     # Fetch content from Contentful
     content = fetch_content_from_contentful()
 
