@@ -1,4 +1,4 @@
-const API_BASE = "https://contentful-hf-app.onrender.com/"; // replace after deploy
+const API_BASE = "http://127.0.0.1:5000"; // replace after deploy
 
 async function generate() {
   const prompt = document.getElementById("prompt").value;

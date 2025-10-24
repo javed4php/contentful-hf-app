@@ -37,11 +37,14 @@ def generate():
     return jsonify({"output": output, "content": content})
 
 def fetch_content_from_contentful():
+    
     url = f"https://cdn.contentful.com/spaces/{CONTENTFUL_SPACE_ID}/entries"
     headers = {
         "Authorization": f"Bearer {CONTENTFUL_ACCESS_TOKEN}"
     }
     response = requests.get(url, headers=headers)
+    print("Contentful status:", response.status_code)
+    print("Contentful response:", response.text)
     if response.status_code == 200:
         return response.json()
     else:
